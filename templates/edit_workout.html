@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <p class="brand">แก้ไขบันทึกออกกำลังกาย</p>
+    <form method="POST">
+      <label>ประเภทกิจกรรม</label>
+      <select name="exercise_id" required>
+        {% for e in exercise_types %}
+        <option value="{{ e.exercise_id }}" {% if e.exercise_id == record.exercise_id %}selected{% endif %}>{{ e.exercise_name }}</option>
+        {% endfor %}
+      </select>
+      <label>วันที่</label>
+      <input type="date" name="workout_date" value="{{ record.workout_date }}" required>
+      <label>ระยะเวลา (นาที)</label>
+      <input type="number" name="duration_minutes" value="{{ record.duration_minutes }}" required>
+      <button type="submit" class="btn-primary">บันทึกการแก้ไข</button>
+    </form>
+    <p class="auth-link"><a href="{{ url_for('health.history') }}">กลับหน้าประวัติ</a></p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="app-shell">
+  <aside class="sidebar">
+    <p class="logo">FitTrack</p>
+    <a class="nav-link active" href="{{ url_for('dashboard') }}">แดชบอร์ด</a>
+    <a class="nav-link" href="{{ url_for('health.history') }}">ประวัติ</a>
+    <a class="nav-link" href="{{ url_for('health.add_health') }}">บันทึกสุขภาพ</a>
+    <a class="nav-link" href="{{ url_for('workout.add_workout') }}">ออกกำลังกาย</a>
+    {% if is_admin %}
+    <a class="nav-link" href="{{ url_for('admin.members') }}">จัดการสมาชิก (Admin)</a>
+    <a class="nav-link" href="{{ url_for('admin.exercise_types') }}">ประเภทออกกำลังกาย (Admin)</a>
+    <a class="nav-link" href="{{ url_for('admin.reports') }}">รายงานสรุปผล (Admin)</a>
+    {% endif %}
+    <a class="nav-link" href="{{ url_for('auth.logout') }}">ออกจากระบบ</a>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div>
+        <p class="greet">สวัสดีตอนเช้า</p>
+        <p class="name">{{ member.name }}</p>
+      </div>
+      <a href="{{ url_for('health.add_health') }}" class="btn-primary">+ บันทึกข้อมูล</a>
+    </div>
+
+    <div class="stats">
+      <div class="stat-card">
+        <p class="stat-label">BMI</p>
+        <p class="stat-val accent">{{ bmi if bmi else '-' }}</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">ไขมันในร่างกาย</p>
+        <p class="stat-val">{{ latest.body_fat_percent if latest else '-' }}%</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">น้ำหนักล่าสุด</p>
+        <p class="stat-val">{{ latest.weight_kg if latest else '-' }} kg</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title">กิจกรรมล่าสุด</p>
+      {% for w in workouts %}
+        <div class="activity-row">
+          <span>{{ w.exercise_name }} {{ w.duration_minutes }} นาที</span>
+          <span class="muted">{{ w.workout_date }}</span>
+        </div>
+      {% else %}
+        <p class="muted">ยังไม่มีข้อมูลการออกกำลังกาย</p>
+      {% endfor %}
+    </div>
+
+    <div class="panel">
+      <p class="panel-title">ประวัติล่าสุด</p>
+      <table>
+        <tr><th>วันที่</th><th>น้ำหนัก</th><th>ไขมัน</th></tr>
+        {% for h in history %}
+        <tr><td>{{ h.record_date }}</td><td>{{ h.weight_kg }} kg</td><td>{{ h.body_fat_percent }}%</td></tr>
+        {% else %}
+        <tr><td colspan="3" class="muted">ยังไม่มีข้อมูล</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+  </main>
+</div>
+{% endblock %}

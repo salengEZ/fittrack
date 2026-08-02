@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="app-shell">
+  <aside class="sidebar">
+    <p class="logo">FitTrack</p>
+    <a class="nav-link" href="{{ url_for('dashboard') }}">แดชบอร์ด</a>
+    <a class="nav-link active" href="{{ url_for('health.history') }}">ประวัติ</a>
+    <a class="nav-link" href="{{ url_for('health.add_health') }}">บันทึกสุขภาพ</a>
+    <a class="nav-link" href="{{ url_for('workout.add_workout') }}">ออกกำลังกาย</a>
+    {% if is_admin %}
+    <a class="nav-link" href="{{ url_for('admin.members') }}">จัดการสมาชิก (Admin)</a>
+    <a class="nav-link" href="{{ url_for('admin.exercise_types') }}">ประเภทออกกำลังกาย (Admin)</a>
+    <a class="nav-link" href="{{ url_for('admin.reports') }}">รายงานสรุปผล (Admin)</a>
+    {% endif %}
+    <a class="nav-link" href="{{ url_for('auth.logout') }}">ออกจากระบบ</a>
+  </aside>
+
+  <main class="main">
+    <p class="name" style="margin-bottom:16px">ประวัติทั้งหมด</p>
+
+    <div class="panel">
+      <p class="panel-title">บันทึกสุขภาพ</p>
+      <table>
+        <tr><th>วันที่</th><th>น้ำหนัก</th><th>ไขมัน</th><th>จัดการ</th></tr>
+        {% for h in health_records %}
+        <tr>
+          <td>{{ h.record_date }}</td><td>{{ h.weight_kg }} kg</td><td>{{ h.body_fat_percent }}%</td>
+          <td>
+            <a href="{{ url_for('health.edit_health', record_id=h.record_id) }}" class="link-btn">แก้ไข</a>
+            <form method="POST" action="{{ url_for('health.delete_health', record_id=h.record_id) }}" style="display:inline" onsubmit="return confirm('ลบข้อมูลนี้?')">
+              <button type="submit" class="link-btn danger">ลบ</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="muted">ยังไม่มีข้อมูล</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title">ออกกำลังกาย</p>
+      <table>
+        <tr><th>วันที่</th><th>ประเภท</th><th>ระยะเวลา</th><th>จัดการ</th></tr>
+        {% for w in workouts %}
+        <tr>
+          <td>{{ w.workout_date }}</td><td>{{ w.exercise_name }}</td><td>{{ w.duration_minutes }} นาที</td>
+          <td>
+            <a href="{{ url_for('workout.edit_workout', workout_id=w.workout_id) }}" class="link-btn">แก้ไข</a>
+            <form method="POST" action="{{ url_for('workout.delete_workout', workout_id=w.workout_id) }}" style="display:inline" onsubmit="return confirm('ลบข้อมูลนี้?')">
+              <button type="submit" class="link-btn danger">ลบ</button>
+            </form>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="4" class="muted">ยังไม่มีข้อมูล</td></tr>
+        {% endfor %}
+      </table>
+    </div>
+  </main>
+</div>
+{% endblock %}

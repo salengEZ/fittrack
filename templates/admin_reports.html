@@ -1,0 +1,26 @@
+{% extends "admin_base.html" %}
+{% set active = 'reports' %}
+{% block admin_content %}
+<p class="name" style="margin-bottom:16px">รายงานสรุปผล</p>
+
+<div class="stats">
+  <div class="stat-card"><p class="stat-label">สมาชิกทั้งหมด</p><p class="stat-val">{{ total_members }}</p></div>
+  <div class="stat-card"><p class="stat-label">ครั้งออกกำลังกายทั้งหมด</p><p class="stat-val accent">{{ total_workouts }}</p></div>
+  <div class="stat-card"><p class="stat-label">แคลอรี่รวมทั้งหมด</p><p class="stat-val">{{ total_calories }}</p></div>
+</div>
+
+<div class="panel">
+  <p class="panel-title">จำนวนครั้งแยกตามประเภทกิจกรรม</p>
+  <table>
+    <tr><th>ประเภท</th><th>จำนวนครั้ง</th></tr>
+    {% for row in by_exercise %}
+    <tr><td>{{ row.exercise_name }}</td><td>{{ row.times }}</td></tr>
+    {% else %}
+    <tr><td colspan="2" class="muted">ยังไม่มีข้อมูล</td></tr>
+    {% endfor %}
+  </table>
+  <div style="margin-top:12px">
+    <a href="{{ url_for('admin.export_reports_csv') }}" class="btn-primary" style="width:auto;padding:0 16px;display:inline-block">Export CSV</a>
+  </div>
+</div>
+{% endblock %}

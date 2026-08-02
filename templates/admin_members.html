@@ -1,0 +1,28 @@
+{% extends "admin_base.html" %}
+{% set active = 'members' %}
+{% block admin_content %}
+<p class="name" style="margin-bottom:16px">จัดการสมาชิก</p>
+<div class="panel">
+  <table>
+    <tr><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>อีเมล</th><th>สถานะ</th><th>จัดการ</th></tr>
+    {% for m in members %}
+    <tr>
+      <td>{{ m.member_id }}</td>
+      <td>{{ m.name }}{% if m.is_admin %} <span class="tag">Admin</span>{% endif %}</td>
+      <td>{{ m.email }}</td>
+      <td>
+        {% if m.is_active %}<span class="tag tag-green">ใช้งาน</span>{% else %}<span class="tag tag-red">ระงับ</span>{% endif %}
+      </td>
+      <td>
+        <form method="POST" action="{{ url_for('admin.toggle_member', member_id=m.member_id) }}" style="display:inline">
+          <button type="submit" class="link-btn">{{ 'ระงับ' if m.is_active else 'เปิดใช้งาน' }}</button>
+        </form>
+        <form method="POST" action="{{ url_for('admin.delete_member', member_id=m.member_id) }}" style="display:inline" onsubmit="return confirm('ลบสมาชิกนี้?')">
+          <button type="submit" class="link-btn danger">ลบ</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

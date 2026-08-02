@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <p class="brand">FitTrack</p>
+    <form method="POST">
+      <label>ชื่อ-นามสกุล</label>
+      <input type="text" name="name" required>
+      <label>อีเมล</label>
+      <input type="email" name="email" placeholder="name@email.com" required>
+      <label>รหัสผ่าน</label>
+      <input type="password" name="password" required>
+      <label>เพศ</label>
+      <select name="gender">
+        <option value="M">ชาย</option>
+        <option value="F">หญิง</option>
+      </select>
+      <label>วันเกิด</label>
+      <input type="date" name="birth_date">
+      <label>ส่วนสูง (ซม.)</label>
+      <input type="number" step="0.1" name="height_cm">
+      <button type="submit" class="btn-primary">สมัครสมาชิก</button>
+    </form>
+    <p class="auth-link">มีบัญชีแล้ว? <a href="{{ url_for('auth.login') }}">เข้าสู่ระบบ</a></p>
+  </div>
+</div>
+{% endblock %}
