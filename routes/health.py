@@ -121,7 +121,7 @@ def history():
     db = current_app.config["get_db"]()
     cur = db.cursor(dictionary=True)
     cur.execute(
-        "SELECT * FROM health_record WHERE member_id = %s ORDER BY record_date DESC",
+        "SELECT * FROM health_record WHERE member_id = %s ORDER BY record_date DESC, record_id DESC",
         (session["member_id"],),
     )
     health_records = cur.fetchall()
