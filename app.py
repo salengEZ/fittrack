@@ -61,6 +61,35 @@ def create_app():
         )
         history = cur.fetchall()
 
+        # เตรียมข้อมูลกราฟแนวโน้มเปอร์เซ็นต์ไขมัน (เรียงเก่า -> ใหม่)
+        fat_series = [
+            h for h in reversed(history) if h["body_fat_percent"] is not None
+        ]
+        fat_chart_points = ""
+        fat_chart_labels = []
+        if len(fat_series) >= 2:
+            values = [float(h["body_fat_percent"]) for h in fat_series]
+            v_min, v_max = min(values), max(values)
+            if v_max == v_min:
+                v_min -= 1
+                v_max += 1
+            pad = (v_max - v_min) * 0.15
+            v_min -= pad
+            v_max += pad
+
+            chart_w, chart_h = 400, 110
+            n = len(values)
+            coords = []
+            for i, v in enumerate(values):
+                x = (i / (n - 1)) * chart_w
+                y = chart_h - ((v - v_min) / (v_max - v_min)) * chart_h
+                coords.append(f"{x:.1f},{y:.1f}")
+            fat_chart_points = " ".join(coords)
+            fat_chart_labels = [
+                (fat_series[0]["record_date"], values[0]),
+                (fat_series[-1]["record_date"], values[-1]),
+            ]
+
         cur.execute(
             """SELECT w.workout_date, w.duration_minutes, e.exercise_name, e.calories_per_hour
                FROM workout_log w JOIN exercise_type e ON w.exercise_id = e.exercise_id
@@ -79,6 +108,8 @@ def create_app():
             latest=latest,
             history=history,
             workouts=workouts,
+            fat_chart_points=fat_chart_points,
+            fat_chart_labels=fat_chart_labels,
         )
 
     return app

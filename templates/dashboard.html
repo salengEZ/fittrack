@@ -40,6 +40,21 @@
     </div>
 
     <div class="panel">
+      <p class="panel-title">แนวโน้มเปอร์เซ็นต์ไขมัน</p>
+      {% if fat_chart_points %}
+      <svg viewBox="0 0 400 110" width="100%" height="110" preserveAspectRatio="none">
+        <polyline points="{{ fat_chart_points }}" fill="none" stroke="#0F6E56" stroke-width="2.5"/>
+      </svg>
+      <div style="display:flex;justify-content:space-between;font-size:11px;color:#888780;margin-top:4px">
+        <span>{{ fat_chart_labels[0][0] }} · {{ fat_chart_labels[0][1] }}%</span>
+        <span>{{ fat_chart_labels[1][0] }} · {{ fat_chart_labels[1][1] }}%</span>
+      </div>
+      {% else %}
+      <p class="muted">ต้องมีข้อมูลเปอร์เซ็นต์ไขมันอย่างน้อย 2 ครั้งขึ้นไปถึงจะแสดงกราฟแนวโน้มได้</p>
+      {% endif %}
+    </div>
+
+    <div class="panel">
       <p class="panel-title">กิจกรรมล่าสุด</p>
       {% for w in workouts %}
         <div class="activity-row">
