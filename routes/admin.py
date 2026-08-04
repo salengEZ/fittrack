@@ -135,7 +135,7 @@ def export_reports_csv():
         writer.writerow([r["name"], r["workout_date"], r["exercise_name"], r["duration_minutes"]])
 
     return Response(
-        output.getvalue(),
+        "\ufeff" + output.getvalue(),
         mimetype="text/csv",
         headers={"Content-Disposition": "attachment; filename=fittrack_report.csv"},
     )
