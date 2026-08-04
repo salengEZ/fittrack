@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="app-shell">
+  <aside class="sidebar">
+    <p class="logo">FitTrack</p>
+    <a class="nav-link" href="{{ url_for('dashboard') }}">แดชบอร์ด</a>
+    <a class="nav-link" href="{{ url_for('health.history') }}">ประวัติ</a>
+    <a class="nav-link" href="{{ url_for('admin.members') }}" {% if active=='members' %}style="background:#E1F5EE;color:#0F6E56;font-weight:bold"{% endif %}>จัดการสมาชิก</a>
+    <a class="nav-link" href="{{ url_for('admin.exercise_types') }}" {% if active=='exercise' %}style="background:#E1F5EE;color:#0F6E56;font-weight:bold"{% endif %}>ประเภทออกกำลังกาย</a>
+    <a class="nav-link" href="{{ url_for('admin.reports') }}" {% if active=='reports' %}style="background:#E1F5EE;color:#0F6E56;font-weight:bold"{% endif %}>รายงานสรุปผล</a>
+    <a class="nav-link" href="{{ url_for('auth.logout') }}">ออกจากระบบ</a>
+  </aside>
+  <main class="main">
+    {% block admin_content %}{% endblock %}
+  </main>
+</div>
+{% endblock %}

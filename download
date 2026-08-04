@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <p class="brand">บันทึกออกกำลังกาย</p>
+    <form method="POST">
+      <label>ประเภทกิจกรรม</label>
+      <select name="exercise_id" required>
+        {% for e in exercise_types %}
+        <option value="{{ e.exercise_id }}">{{ e.exercise_name }}</option>
+        {% endfor %}
+      </select>
+      <label>วันที่</label>
+      <input type="date" name="workout_date" required>
+      <label>ระยะเวลา (นาที)</label>
+      <input type="number" name="duration_minutes" required>
+      <button type="submit" class="btn-primary">บันทึก</button>
+    </form>
+    <p class="auth-link"><a href="{{ url_for('dashboard') }}">กลับหน้าแดชบอร์ด</a></p>
+  </div>
+</div>
+{% endblock %}

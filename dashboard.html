@@ -1,0 +1,36 @@
+{% extends "admin_base.html" %}
+{% set active = 'exercise' %}
+{% block admin_content %}
+<p class="name" style="margin-bottom:16px">จัดการประเภทออกกำลังกาย</p>
+
+<div class="panel">
+  <p class="panel-title">เพิ่มประเภทใหม่</p>
+  <form method="POST" style="display:flex;gap:10px;align-items:flex-end">
+    <div>
+      <label>ชื่อประเภท</label>
+      <input type="text" name="exercise_name" required>
+    </div>
+    <div>
+      <label>แคลอรี่ต่อชั่วโมง</label>
+      <input type="number" name="calories_per_hour" required>
+    </div>
+    <button type="submit" class="btn-primary" style="width:auto;padding:0 16px">+ เพิ่ม</button>
+  </form>
+</div>
+
+<div class="panel">
+  <table>
+    <tr><th>ลำดับ</th><th>ประเภท</th><th>แคลอรี่/ชม.</th><th>จัดการ</th></tr>
+    {% for e in exercise_types %}
+    <tr>
+      <td>{{ e.exercise_id }}</td><td>{{ e.exercise_name }}</td><td>{{ e.calories_per_hour }}</td>
+      <td>
+        <form method="POST" action="{{ url_for('admin.delete_exercise_type', exercise_id=e.exercise_id) }}" style="display:inline" onsubmit="return confirm('ลบประเภทนี้?')">
+          <button type="submit" class="link-btn danger">ลบ</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
